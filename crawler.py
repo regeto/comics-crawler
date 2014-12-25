@@ -32,7 +32,7 @@ class Crawler:
         urllib.request.urlretrieve(image_url, path + file + "." + extension)
 
     def get_chapter_name(self, name):
-        return ''.join([char for char in name if char not in self.illegal_characters])
+        return (''.join([char for char in name if char not in self.illegal_characters])).strip()
 
     def save_chapter(self, chapter_name, image_urls, file_names, path=""):
         # Save all images in a list to the given path
