@@ -26,3 +26,21 @@ class BatoCrawler(Crawler):
             ret[pos] = dict(url=_url, name=_name)
             pos += 1
         return ret
+
+    def get_pages(self, chapter_url):
+        html = self.get_html(chapter_url)
+        regex = "id=\"page_select\".*?>(.*?)<\/select"
+        reg = re.compile(regex, re.DOTALL)
+        r = reg.findall(html)[0].split("</option>")
+        r.pop()
+        regex_url = "\"(http:.*?)\""
+        reg_url = re.compile(regex_url)
+        ret = [None] * len(r)
+        pos = 0
+        for x in r:
+            _url = reg_url.findall(x)[0]
+            _name = _url.split("/")[-1]
+            ret[pos] = dict(url=_url, name=_name)
+            pos += 1
+        return ret
+
