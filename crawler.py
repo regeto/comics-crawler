@@ -26,7 +26,7 @@ class Crawler:
     def get_html(self, url):
         # Get html from url and return it as a string
         response = urllib.request.urlopen(url)
-        return response.read().decode("utf-8")
+        return response.read().decode("utf-8", 'ignore')
 
     def get_name_for_file_system(self, name):
         return (''.join([char for char in name if char not in self.illegal_characters])).strip()
@@ -43,23 +43,25 @@ class Crawler:
     def do_download_file(self, url, path):
         urllib.request.urlretrieve(url, path)
 
-    def download_chapter(self, chapter_url, path=""):
+    def download_chapter(self, chapter_url, path="", force=False):
         """Download a single chapter of a series
 
         :param chapter_url: URL linking to the chapter overview
         :param path: path to save the chapter to
+        :param force: download regardless of chapter's existence
         :return: False if chapter already exists locally. True otherwise
         """
         if not path == "" and not path[-1] == "/":
             path += "/"
-        if os.path.exists(path):
+        if os.path.exists(path) and not force:
             if self.verbose:
                 print("The folder at \"" + path + "\" already exists. This chapter has been skipped.")
             return False
         pages = self.get_pages(chapter_url)
-        if self.verbose:
-            print("Creating folder at \"" + path + "\".")
-        os.makedirs(path)
+        if not os.path.exists(path):
+            if self.verbose:
+                print("Creating folder at \"" + path + "\".")
+            os.makedirs(path)
         print("Downloading chapter from " + chapter_url + ".")
         for page in pages:
             page_name = self.get_name_for_file_system(page['name'])
@@ -70,12 +72,13 @@ class Crawler:
             print("Chapter completed.")
         return True
 
-    def download_series(self, series_url, path="", limit=0):
+    def download_series(self, series_url, path="", limit=0, force=False):
         """Download chapters of a series
 
         :param series_url: URL linking to the series overview page
         :param path: path to save the series to
         :param limit: maximum amount of chapters to download. Leave at 0 for no limit.
+        :param force: download regardless of chapter's existence
         :return: None
         """
         chapters = self.get_chapters(series_url)
@@ -92,7 +95,9 @@ class Crawler:
                 count += 1
             if count > limit:
                 break
-            success = self.download_chapter(chapter['url'], path + self.get_name_for_file_system(chapter['name']))
+            chapter_url = chapter['url']
+            chapter_path = path + self.get_name_for_file_system(chapter['name'])
+            success = self.download_chapter(chapter_url, chapter_path, force)
             if (limit != 0) and not success:
                 count -= 1
         if self.verbose:
