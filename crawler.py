@@ -1,3 +1,4 @@
+import glob
 import os
 import urllib.request
 
@@ -79,27 +80,19 @@ class Crawler:
         :param path: path to save the images to
         :param chapter_name: the chapter's name
         :param force: download regardless of chapter's existence
-        :return: False if no images will be downloaded, True after completion
+        :return: False if no image will be downloaded, True after completion
         """
-        if not path == "" and not path[-1] == "/":
-            path += "/"
-        pages = self.get_pages(chapter_url)
-        if not os.path.exists(path):
-            if self.verbose:
-                print("Creating folder at \"" + path + "\".")
-            os.makedirs(path)
-        rt = False
-        for page in pages:
-            page_name = chapter_name + " - " + self.get_name_for_file_system(page['name'])
-            if os.path.exists(path + page_name) and os.path.isfile(path + page_name) and not force:
-                break
-            rt = True
-            if self.verbose:
-                print("Downloading file \"" + page_name + "\".")
-            self.do_download_file(page['url'], path + page_name)
-        if self.verbose and rt:
-            print("Chapter completed.")
-        return rt
+        # can be tricked by folders named 'path + chapter_name + "." + something' but that's hardly important
+        files = glob.glob(path + chapter_name + ".*")
+        if files and not force:
+            return False
+        page = self.get_pages(chapter_url)[0]
+        page_url = page['url']
+        page_name = chapter_name + "." + self.get_file_extension(page_url)
+        if self.verbose:
+            print("Downloading file \"" + page_name + "\".")
+        self.do_download_file(page_url, path + page_name)
+        return True
 
     def download_series(self, series_url, path="", limit=0, force=False, single=False):
         """Download chapters of a series

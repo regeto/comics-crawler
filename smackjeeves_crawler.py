@@ -25,5 +25,5 @@ class SmackjeevesCrawler(Crawler):
         regex = "src=\"(.*?)\".*?\"comic_image\""
         reg = re.compile(regex)
         r = reg.findall(html)
-        ret = [dict(url=r[0], name=self.get_complete_file_name(r[0]))]
+        ret = [dict(url=r[0])]
         return ret
