@@ -7,6 +7,7 @@ class Crawler:
     url = ""
     search = ""
     illegal_characters = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    verbose = True
 
     def search_series(self, title):
         # Search for comic by its name, then return a list of matches
@@ -25,27 +26,59 @@ class Crawler:
         # Parse chapter for pages, then return a list of page urls
         return list()
 
-    def save_image(self, image_url, file, extension="jpg", path=""):
-        # Save a file from image_url to path/file.extension
-        if not os.path.exists(path):
-            os.makedirs(path)
-        urllib.request.urlretrieve(image_url, path + file + "." + extension)
-
-    def get_chapter_name(self, name):
+    def get_name_for_file_system(self, name):
         return (''.join([char for char in name if char not in self.illegal_characters])).strip()
 
-    def save_chapter(self, chapter_name, image_urls, file_names, path=""):
-        # Save all images in a list to the given path
-        chapter = self.get_chapter_name(chapter_name)
-        file_path = path + chapter + "/"
-        if os.path.exists(file_path):
-            print("The folder at \"" + file_path + "\" already exists. This chapter has been skipped.")
+    def get_file_extension(self, file_url):
+        return file_url.split("/")[-1].split(".")[-1]
+
+    def get_file_name(self, file_url):
+        return '.'.join(file_url.split("/")[-1].split(".")[:-1])
+
+    def get_complete_file_name(self, file_url):
+        return file_url.split("/")[-1]
+
+    def do_download_file(self, url, path):
+        urllib.request.urlretrieve(url, path)
+
+    def download_chapter(self, chapter_url, path=""):
+        if not path == "" and not path[-1] == "/":
+            path += "/"
+        if os.path.exists(path):
+            if self.verbose:
+                print("The folder at \"" + path + "\" already exists. This chapter has been skipped.")
             return False
-        if len(image_urls) != len(file_names):
-            print("The url and name lists don't seem to fit together! This chapter has been skipped.")
-            return False
-        os.makedirs(file_path)
-        for i in range(len(image_urls)):
-            print("Retrieving image " + file_names[i] + "...")
-            urllib.request.urlretrieve(image_urls[i], file_path + file_names[i])
+        pages = self.get_pages(chapter_url)
+        if self.verbose:
+            print("Creating folder at \"" + path + "\".")
+        os.makedirs(path)
+        if self.verbose:
+            print("Downloading chapter from " + chapter_url + ".")
+        for page in pages:
+            page_name = self.get_name_for_file_system(page['name'])
+            if self.verbose:
+                print("Downloading file \"" + page_name + "\".")
+            self.do_download_file(page['url'], path + page_name)
+        if self.verbose:
+            print("Chapter completed.")
         return True
+
+    def download_series(self, series_url, path="", limit = "0"):
+        chapters = self.get_chapters(series_url)
+        if not path == "" and not path[-1] == "/":
+            path += "/"
+        if not os.path.exists(path):
+            if self.verbose:
+                print("Creating folder at \"" + path + "\".")
+            os.makedirs(path)
+        count = 0
+        for chapter in chapters:
+            if limit != 0:
+                count += 1
+            if count > limit:
+                break
+            success = self.download_chapter(chapter['url'], path + self.get_name_for_file_system(chapter['name']))
+            if (limit != 0) and not success:
+                count -= 1
+
+

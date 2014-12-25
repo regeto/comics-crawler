@@ -39,7 +39,7 @@ class DynastyCrawler(Crawler):
         pos = 0
         for x in r:
             _url = self.url + reg_url.findall(x)[0]
-            _name = reg_name.findall(x)[0]
+            _name = reg_name.findall(x)[0] + "." + self.get_file_extension(_url)
             ret[pos] = dict(url=_url, name=_name)
             pos += 1
         return ret
