@@ -22,7 +22,6 @@ class OotsCrawler(Crawler):
             pos += 1
         return ret
 
-
     def get_pages(self, chapter_url):
         html = self.get_html(chapter_url)
         regex = "(\/comics\/images\/.*?)\""

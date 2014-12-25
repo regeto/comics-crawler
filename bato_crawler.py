@@ -9,7 +9,7 @@ class BatoCrawler(Crawler):
 
     def get_chapters(self, series_url):
         html = self.get_html(series_url)
-        regex = "<tr class=\"row lang_English chapter_row\">(.*?)<\/tr>"
+        regex = "<tr class=\"row lang_English chapter_row\".*?>(.*?)<\/tr>"
         reg = re.compile(regex, re.DOTALL)
         r = reg.findall(html)
         # reversed list because batoto lists the most recent chapter at the top
