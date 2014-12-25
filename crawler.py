@@ -60,8 +60,7 @@ class Crawler:
         if self.verbose:
             print("Creating folder at \"" + path + "\".")
         os.makedirs(path)
-        if self.verbose:
-            print("Downloading chapter from " + chapter_url + ".")
+        print("Downloading chapter from " + chapter_url + ".")
         for page in pages:
             page_name = self.get_name_for_file_system(page['name'])
             if self.verbose:
@@ -71,7 +70,7 @@ class Crawler:
             print("Chapter completed.")
         return True
 
-    def download_series(self, series_url, path="", limit="0"):
+    def download_series(self, series_url, path="", limit=0):
         """Download chapters of a series
 
         :param series_url: URL linking to the series overview page
@@ -80,6 +79,7 @@ class Crawler:
         :return: None
         """
         chapters = self.get_chapters(series_url)
+        print("Checking " + series_url + " for updates.")
         if not path == "" and not path[-1] == "/":
             path += "/"
         if not os.path.exists(path):
@@ -95,5 +95,7 @@ class Crawler:
             success = self.download_chapter(chapter['url'], path + self.get_name_for_file_system(chapter['name']))
             if (limit != 0) and not success:
                 count -= 1
+        if self.verbose:
+            print("Series completed.")
 
 
