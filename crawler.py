@@ -49,7 +49,7 @@ class Crawler:
         :param chapter_url: URL linking to the chapter overview
         :param path: path to save the chapter to
         :param force: download regardless of chapter's existence
-        :return: False if chapter already exists locally. True otherwise
+        :return: False if chapter will not be downloaded, True after completion
         """
         if not path == "" and not path[-1] == "/":
             path += "/"
@@ -72,13 +72,41 @@ class Crawler:
             print("Chapter completed.")
         return True
 
-    def download_series(self, series_url, path="", limit=0, force=False):
+    def download_chapter_single(self, chapter_url, path="", chapter_name="", force=False):
+        """Download the images of a single chapter of a series
+
+        :param chapter_url: URL linking to the chapter overview
+        :param path: path to save the images to
+        :param chapter_name: the chapter's name
+        :param force: download regardless of chapter's existence
+        :return: None
+        """
+        if not path == "" and not path[-1] == "/":
+            path += "/"
+        pages = self.get_pages(chapter_url)
+        if not os.path.exists(path):
+            if self.verbose:
+                print("Creating folder at \"" + path + "\".")
+            os.makedirs(path)
+        print("Downloading chapter from " + chapter_url + ".")
+        for page in pages:
+            page_name = chapter_name + " - " + self.get_name_for_file_system(page['name'])
+            if os.path.exists(path + page_name) and os.path.isfile(path + page_name) and not force:
+                break
+            if self.verbose:
+                print("Downloading file \"" + page_name + "\".")
+            self.do_download_file(page['url'], path + page_name)
+        if self.verbose:
+            print("Chapter completed.")
+
+    def download_series(self, series_url, path="", limit=0, force=False, single=False):
         """Download chapters of a series
 
         :param series_url: URL linking to the series overview page
         :param path: path to save the series to
         :param limit: maximum amount of chapters to download. Leave at 0 for no limit.
-        :param force: download regardless of chapter's existence
+        :param force: download regardless of chapter's existence. Not compatible with single.
+        :param single: download all images from all chapters into a single directory. Not compatible with limit.
         :return: None
         """
         chapters = self.get_chapters(series_url)
@@ -96,8 +124,12 @@ class Crawler:
             if count > limit:
                 break
             chapter_url = chapter['url']
-            chapter_path = path + self.get_name_for_file_system(chapter['name'])
-            success = self.download_chapter(chapter_url, chapter_path, force)
+            chapter_name = self.get_name_for_file_system(chapter['name'])
+            chapter_path = path + chapter_name
+            if single:
+                success = self.download_chapter_single(chapter_url, path, chapter_name, force)
+            else:
+                success = self.download_chapter(chapter_url, chapter_path, force)
             if (limit != 0) and not success:
                 count -= 1
         if self.verbose:
