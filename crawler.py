@@ -7,7 +7,7 @@ class Crawler:
     url = ""
     search = ""
     illegal_characters = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
-    verbose = True
+    verbose = False
 
     def search_series(self, title):
         # Search for comic by its name, then return a list of matches
@@ -15,16 +15,18 @@ class Crawler:
 
     def get_chapters(self, series_url):
         # Parse series for chapters, then return a list of dicts consisting of the chapter url and other relevant info
+        # Implemented in subclass
+        return list()
+
+    def get_pages(self, chapter_url):
+        # Parse chapter for pages, then return a list of page urls
+        # Implemented in subclass
         return list()
 
     def get_html(self, url):
         # Get html from url and return it as a string
         response = urllib.request.urlopen(url)
         return response.read().decode("utf-8")
-
-    def get_pages(self, chapter_url):
-        # Parse chapter for pages, then return a list of page urls
-        return list()
 
     def get_name_for_file_system(self, name):
         return (''.join([char for char in name if char not in self.illegal_characters])).strip()
@@ -42,6 +44,12 @@ class Crawler:
         urllib.request.urlretrieve(url, path)
 
     def download_chapter(self, chapter_url, path=""):
+        """Download a single chapter of a series
+
+        :param chapter_url: URL linking to the chapter overview
+        :param path: path to save the chapter to
+        :return: False if chapter already exists locally. True otherwise
+        """
         if not path == "" and not path[-1] == "/":
             path += "/"
         if os.path.exists(path):
@@ -63,7 +71,14 @@ class Crawler:
             print("Chapter completed.")
         return True
 
-    def download_series(self, series_url, path="", limit = "0"):
+    def download_series(self, series_url, path="", limit="0"):
+        """Download chapters of a series
+
+        :param series_url: URL linking to the series overview page
+        :param path: path to save the series to
+        :param limit: maximum amount of chapters to download. Leave at 0 for no limit.
+        :return: None
+        """
         chapters = self.get_chapters(series_url)
         if not path == "" and not path[-1] == "/":
             path += "/"

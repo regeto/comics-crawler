@@ -17,12 +17,12 @@ class DynastyCrawler(Crawler):
         ret = [None] * len(r)
         pos = 0
         for x in r:
-            _url = self.url + reg_url.findall(x)[0]
-            _name = reg_name.findall(x)[0]
+            url = self.url + reg_url.findall(x)[0]
+            name = reg_name.findall(x)[0]
             # TODO: date formatting
             # DynastyReader already lists these sorted so that's awesome
-            _date = reg_date.findall(x)[0]
-            ret[pos] = dict(url=_url, name=_name, date=_date)
+            date = reg_date.findall(x)[0]
+            ret[pos] = dict(url=url, name=name, date=date)
             pos += 1
         return ret
 
@@ -38,8 +38,8 @@ class DynastyCrawler(Crawler):
         ret = [None] * len(r)
         pos = 0
         for x in r:
-            _url = self.url + reg_url.findall(x)[0]
-            _name = reg_name.findall(x)[0] + "." + self.get_file_extension(_url)
-            ret[pos] = dict(url=_url, name=_name)
+            url = self.url + reg_url.findall(x)[0]
+            name = reg_name.findall(x)[0] + "." + self.get_file_extension(url)
+            ret[pos] = dict(url=url, name=name)
             pos += 1
         return ret
