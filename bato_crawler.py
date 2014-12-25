@@ -21,9 +21,9 @@ class BatoCrawler(Crawler):
         ret = [None] * len(r)
         pos = 0
         for x in r:
-            _url = reg_url.findall(x)[0]
-            _name = reg_name.findall(x)[0]
-            ret[pos] = dict(url=_url, name=_name)
+            url = reg_url.findall(x)[0]
+            name = reg_name.findall(x)[0]
+            ret[pos] = dict(url=url, name=name)
             pos += 1
         return ret
 
@@ -35,12 +35,16 @@ class BatoCrawler(Crawler):
         r.pop()
         regex_url = "\"(http:.*?)\""
         reg_url = re.compile(regex_url)
+        regex_image = "<img id=\"comic_page\".*?src=\"(.*?)\""
+        reg_image = re.compile(regex_image)
         ret = [None] * len(r)
         pos = 0
         for x in r:
-            _url = reg_url.findall(x)[0]
-            _name = _url.split("/")[-1]
-            ret[pos] = dict(url=_url, name=_name)
+            url = reg_url.findall(x)[0]
+            html_image = self.get_html(url)
+            actual_url = reg_image.findall(html_image)[0]
+            name = url.split("/")[-1]
+            ret[pos] = dict(url=actual_url, name=name)
             pos += 1
         return ret
 
