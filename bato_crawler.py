@@ -8,7 +8,7 @@ class BatoCrawler(Crawler):
     search = "http://bato.to/search?name=%s"
 
     def get_chapters(self, series_url):
-        html = self.get_html(series_url)
+        html = self.get_html_gzip(series_url)
         regex = "<tr class=\"row lang_English chapter_row\".*?>(.*?)<\/tr>"
         reg = re.compile(regex, re.DOTALL)
         r = reg.findall(html)
@@ -28,7 +28,7 @@ class BatoCrawler(Crawler):
         return ret
 
     def get_pages(self, chapter_url):
-        html = self.get_html(chapter_url)
+        html = self.get_html_gzip(chapter_url)
         regex = "id=\"page_select\".*?>(.*?)<\/select"
         reg = re.compile(regex, re.DOTALL)
         r = reg.findall(html)[0].split("</option>")
