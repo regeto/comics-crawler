@@ -1,6 +1,5 @@
 import re
-
-from crawlers.crawler import Crawler
+from crawlers import Crawler
 
 
 class DynastyCrawler(Crawler):
