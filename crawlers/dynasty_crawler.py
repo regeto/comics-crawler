@@ -28,7 +28,7 @@ class DynastyCrawler(Crawler):
 
     def get_pages(self, chapter_url):
         html = self.get_html(chapter_url)
-        regex = "var pages = \[(.*?)\]"
+        regex = "var pages = \[\{(.*?\")\}\];"
         reg = re.compile(regex)
         r = reg.findall(html)[0].split("},")
         regex_url = "\"image\":\"(.*?)\""
