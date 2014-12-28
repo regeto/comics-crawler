@@ -127,10 +127,10 @@ class Crawler:
             os.makedirs(path)
         count = 0
         for chapter in chapters:
-            if count > limit:
-                break
             if limit != 0:
                 count += 1
+            if count > limit:
+                break
             chapter_url = chapter['url']
             chapter_name = self.get_name_for_file_system(chapter['name'])
             chapter_path = path + chapter_name
