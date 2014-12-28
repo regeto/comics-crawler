@@ -3,7 +3,7 @@ from crawlers import Crawler
 
 
 class DynastyCrawler(Crawler):
-    site = "Dynasty Reader"
+    site = "Dynasty Scans"
     url = "http://dynasty-scans.com"
     search = "http://dynasty-scans.com/search?q=%s"
 
