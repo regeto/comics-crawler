@@ -1,10 +1,11 @@
 import re
+import urllib.parse
 from crawlers import Crawler
 
 
 class KawaiiCrawler(Crawler):
     site = "Kawaii Scans"
-    url = "http://kawaii.ca"
+    url = "http://kawaii.ca/reader/"
 
     def get_chapters(self, series_url):
         if not series_url[-1] == "/":
@@ -39,7 +40,13 @@ class KawaiiCrawler(Crawler):
         pos = 0
         for x in r_page:
             url = chapter_url + x[0]
-            name = x[1]
-            ret[pos] = dict(url=url, name=name)
+            html_image = self.get_html(url)
+            regex_image = "<img src=\"(.*?)\".*?class=\"picture\" />"
+            reg_image = re.compile(regex_image)
+            r_image = reg_image.findall(html_image)[0]
+            r_image = urllib.parse.quote(r_image)
+            url_image = self.url + r_image
+            name = x[1] + '.' + self.get_file_extension(url_image)
+            ret[pos] = dict(url=url_image, name=name)
             pos += 1
         return ret
