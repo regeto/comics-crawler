@@ -46,13 +46,13 @@ class Crawler:
         return (''.join([char for char in name if char not in self.illegal_characters])).strip()
 
     def get_file_extension(self, file_url):
-        return file_url.split("/")[-1].split(".")[-1]
+        return self.get_complete_file_name(file_url).split(".")[-1]
 
     def get_file_name(self, file_url):
-        return '.'.join(file_url.split("/")[-1].split(".")[:-1])
+        return '.'.join(self.get_complete_file_name(file_url).split(".")[:-1])
 
     def get_complete_file_name(self, file_url):
-        return file_url.split("/")[-1]
+        return file_url.split("/")[-1].split("?")[0]
 
     def do_download_file(self, url, path):
         urllib.request.urlretrieve(url, path)
