@@ -1,6 +1,7 @@
 import re
 from crawlers import Crawler
 
+
 class KissCrawler(Crawler):
     site = "Kissmanga"
     url = "http://kissmanga.com"
@@ -26,6 +27,6 @@ class KissCrawler(Crawler):
         ret = [None] * len(r)
         pos = 0
         for x in r:
-            ret[pos] = dict(url=x, name = self.get_complete_file_name(x))
+            ret[pos] = dict(url=x, name=self.get_complete_file_name(x))
             pos += 1
         return ret

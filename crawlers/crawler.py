@@ -33,14 +33,13 @@ class Crawler:
 
     def get_html_gzip(self, url):
         # Get html from url when the server sends you gzip data and return it as a string
-        response = urllib.request.urlopen(urllib.request.Request(url,
-                    headers={"User-Agent": "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11",
-                             "Accept-Encoding": "gzip"}))
+        headers = {"User-Agent": "Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11",
+                   "Accept-Encoding": "gzip"}
+        response = urllib.request.urlopen(urllib.request.Request(url, headers=headers))
         read = response.read()
         bi = io.BytesIO(read)
         gf = gzip.GzipFile(fileobj=bi, mode="rb")
         return gf.read().decode("utf-8", 'ignore')
-
 
     def get_name_for_file_system(self, name):
         return (''.join([char for char in name if char not in self.illegal_characters])).strip()

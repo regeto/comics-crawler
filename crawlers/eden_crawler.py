@@ -16,8 +16,8 @@ class EdenCrawler(Crawler):
         ret = [None] * len(r)
         pos = 0
         for x in r:
-            url = self.url + r[pos][0]
-            name = r[pos][1]
+            url = self.url + x[0]
+            name = x[1]
             ret[pos] = dict(url=url, name=name)
             pos += 1
         return ret
