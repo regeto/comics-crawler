@@ -106,7 +106,7 @@ class Crawler:
         self.do_download_file(page_url, path + page_name)
         return True
 
-    def download_series(self, series_url, path="", limit=0, force=False, webcomic=False):
+    def download_series(self, series_url, path="", limit=0, force=False, webcomic=False, oneshot=False):
         """Download chapters of a series
 
         :param series_url: URL linking to the series overview page
@@ -120,7 +120,7 @@ class Crawler:
         print("Checking " + series_url + " for updates.")
         if not path == "" and not path[-1] == "/":
             path += "/"
-        if not os.path.exists(path):
+        if not os.path.exists(path) and not oneshot:
             if self.verbose:
                 print("Creating folder at \"" + path + "\".")
             os.makedirs(path)
@@ -131,8 +131,10 @@ class Crawler:
             if count > limit:
                 break
             chapter_url = chapter['url']
-            chapter_name = self.get_name_for_file_system(chapter['name'])
-            chapter_path = path + chapter_name
+            chapter_path = path
+            if not oneshot:
+                chapter_name = self.get_name_for_file_system(chapter['name'])
+                chapter_path += chapter_name
             if webcomic:
                 success = self.download_chapter_webcomic(chapter_url, path, chapter_name, force)
             else:
