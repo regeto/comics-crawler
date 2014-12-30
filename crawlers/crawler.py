@@ -85,7 +85,7 @@ class Crawler:
             print("Chapter completed.")
         return True
 
-    def download_chapter_single(self, chapter_url, path="", chapter_name="", force=False):
+    def download_chapter_webcomic(self, chapter_url, path="", chapter_name="", force=False):
         """Download the images of a single chapter of a series
 
         :param chapter_url: URL linking to the chapter overview
@@ -106,7 +106,7 @@ class Crawler:
         self.do_download_file(page_url, path + page_name)
         return True
 
-    def download_series(self, series_url, path="", limit=0, force=False, single=False):
+    def download_series(self, series_url, path="", limit=0, force=False, webcomic=False):
         """Download chapters of a series
 
         :param series_url: URL linking to the series overview page
@@ -133,8 +133,8 @@ class Crawler:
             chapter_url = chapter['url']
             chapter_name = self.get_name_for_file_system(chapter['name'])
             chapter_path = path + chapter_name
-            if single:
-                success = self.download_chapter_single(chapter_url, path, chapter_name, force)
+            if webcomic:
+                success = self.download_chapter_webcomic(chapter_url, path, chapter_name, force)
             else:
                 success = self.download_chapter(chapter_url, chapter_path, force)
             if (limit != 0) and not success:
