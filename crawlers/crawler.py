@@ -116,10 +116,13 @@ class Crawler:
         :param single: download all images from all chapters into a single directory.
         :return: None
         """
-        chapters = self.get_chapters(series_url)
-        print("Checking " + series_url + " for updates.")
         if not path == "" and not path[-1] == "/":
             path += "/"
+        if oneshot and os.path.exists(path):
+            return
+        chapters = self.get_chapters(series_url)
+        print("Checking " + series_url + " for updates.")
+
         if not os.path.exists(path) and not oneshot:
             if self.verbose:
                 print("Creating folder at \"" + path + "\".")
