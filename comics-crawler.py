@@ -1,5 +1,6 @@
 from crawlers import *
 from sources import *
+import argparse
 
 # directory prefix
 # use this if the sources only list directories relative to some sort of comic folder
@@ -40,4 +41,9 @@ def update_all():
     update_oots()
     update_smackjeeves()
 
-update_all()
+parser = argparse.ArgumentParser()
+parser.add_argument("--update", help="update from all sites after everything else is done.", action="store_true")
+args = parser.parse_args()
+
+if args.update or not any(vars(args).values()):
+    update_all()
