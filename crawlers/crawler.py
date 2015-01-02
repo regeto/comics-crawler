@@ -113,7 +113,8 @@ class Crawler:
         :param path: path to save the series to
         :param limit: maximum amount of chapters to download. Leave at 0 for no limit.
         :param force: download regardless of chapter's existence.
-        :param single: download all images from all chapters into a single directory.
+        :param webcomic: download all images from all chapters into a single directory.
+        :param oneshot: download all images from the single chapter into a single directory
         :return: None
         """
         if not path == "" and not path[-1] == "/":
