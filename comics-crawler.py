@@ -8,7 +8,7 @@ def launch_command_line_interface():
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--update", help="update from all sites after everything else is done.", action="store_true")
+parser.add_argument("-u", "--update", help="update from all crawlers and exit", action="store_true")
 args = parser.parse_args()
 
 if args.update:
