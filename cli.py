@@ -34,6 +34,32 @@ def parse_update(argument=""):
         print(pre['err'] + key + " is not a valid argument!")
     return
 
+def show_help(argument=""):
+    print()
+    if argument == "":
+        print(pre['help'] + "usage: argument [params]")
+        print()
+        print(pre['help'] + "arguments:")
+        print("h, help -- show this help message")
+        print("h, help [argument] -- show help message for specific argument")
+        print("u, update -- update from all crawlers")
+        print("u, update [crawler] -- update from specific crawler")
+        print()
+        print(pre['help'] + "optional parameters will be passed along to the specific method.")
+    if argument in ["u", "update"]:
+        print(pre['help'] + "usage: update [crawler]")
+        print()
+        print(pre['help'] + "optional arguments:")
+        print()
+        print("None, all, any -- update from all crawlers")
+        print("bato, batoto, bato.to -- update from batoto")
+        print("dynasty, dyasty-reader, dynasty-scans, dynasty-scans.com -- update from dynasty")
+        print("eden, mangaeden, mangaeden.com -- update from mangaeden")
+        print("kawai, kawaii, kawaii-scans, kawaii-reader, kawaii.ca -- update from kawaii")
+        print("oots, giantitp, giantitp.com -- update oots")
+        print("smack, smackjeeves, smackjeeves.com -- update from smackjeeves")
+    print()
+
 pre = dict(
     de="comics-crawler:> ",
     check="checking:> ",
@@ -46,6 +72,8 @@ pre = dict(
 switch = dict()
 for x in ["update", "u", "ud"]:
     switch[x] = parse_update
+for x in ["h", "help"]:
+    switch[x] = show_help
 
 switch_update = dict()
 for x in ["", "all", "any"]:
