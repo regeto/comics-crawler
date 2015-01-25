@@ -61,7 +61,7 @@ def show_help(argument=""):
     print()
 
 pre = dict(
-    de="comics-crawler:> ",
+    de=":> ",
     check="checking:> ",
     update="updating:> ",
     download="downloading:> ",
