@@ -6,23 +6,23 @@ Every sources file should only be a single list, names "sources". This list is c
 Here is how the dicts should look:
 
 Required arguments:
-url -- url to the series. If possible, a series overview page that links to all the chapters.
+     url -- url to the series. If possible, a series overview page that links to all the chapters.
 
 Optional arguments:
-dir -- (str) directory to download to.
-force -- (bool) download even if the chapter already exists
-oneshot --(bool) if this is a oneshot (only has one chapter). Oneshots will be saved directly into the series folder.
+     dir -- (str)  directory to download to.
+   force -- (bool) download even if the chapter already exists
+ oneshot -- (bool) if this is a oneshot (only has one chapter). Oneshots will be saved directly into the series folder.
 webcomic -- (bool) if this is a webcomic (only one page per 'chapter'). Webcomics will not be split into folders per chapter.
 
 
 If you don't know python, don't worry. Just copy-paste this entry once per series into the respective sources file
 and edit the values to suit your needs. You can ignore everything following the # character, it will not be computed.
 
-dict(
-    url="placeholder", # url to the series
-    dir="", # folder where this series will be downloaded to, optional
-    force=False, # (True)/False, optional
-    oneshot=False, # (True)/False, optional
-    webcomic=False, # (True)/False, optional
-),
+    dict(
+        url="", # url to the series
+        dir="", # folder where this series will be downloaded to, optional
+        force=False, # true/False, optional
+        oneshot=False, # true/False, optional
+        webcomic=False, # true/False, optional
+    ),
 
