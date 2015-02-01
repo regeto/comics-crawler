@@ -1,9 +1,6 @@
 from crawlers import *
 from sources import *
-
-# directory prefix
-# use this if the sources only list directories relative to some sort of comic folder
-directory = ""
+from config import directory
 
 
 def update_batoto():
@@ -42,7 +39,7 @@ def update_all():
 def do_update(crawler, slist):
     for series in slist:
         crawler.download_series(series['url'],
-                                directory + series['dir'],
+                                directory.global_prefix + series['dir'],
                                 force='force' in series,
                                 oneshot='oneshot' in series,
                                 webcomic='webcomic' in series,

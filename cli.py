@@ -34,6 +34,7 @@ def parse_update(argument=""):
         print(pre['err'] + key + " is not a valid argument!")
     return
 
+
 def show_help(argument=""):
     print()
     if argument == "":

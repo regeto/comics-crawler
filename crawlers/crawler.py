@@ -56,6 +56,72 @@ class Crawler:
     def do_download_file(self, url, path):
         urllib.request.urlretrieve(url, path)
 
+    def download_updates(self, original_updates):
+        updates = original_updates[:]  # creates a copy of that list
+        chapters = len(updates)
+        if chapters < 1:
+            return
+        length_c = len(str(chapters))
+        total = 0
+        pages = 0
+        for update in updates:
+            total += len(update['pages'])
+        for i in range(chapters):
+            length = len(str(i+1))
+            istr = '0' * (length_c - length) + str(i+1)
+            print("Loading: " + " [", end="")
+            arrow = int((pages / total) * 19)
+            print(('=' * arrow) + '>' + (' ' * (18-arrow)), end="")
+            print("] (" + istr + "/" + str(chapters) + ")", end="\r")
+            self.download_update(updates[i])
+            pages += len((original_updates.pop(0))['pages'])
+        print("Finished  [" + ('=' * 19) + "] (" + str(chapters) + "/" + str(chapters) + ")")
+        print("Downloaded " + str(chapters) + " updates for a total of " + str(pages) + " images.")
+
+    def download_update(self, update):
+        if not update['path'] == "" and not update['path'][-1] == "/":
+            update['path'] += "/"
+        if not os.path.exists(update['path']):
+            os.makedirs(update['path'])
+        for url, file in update['pages']:
+            self.do_download_file(url, file)
+
+    def get_updates(self, series_url, path):
+        if not path == "" and not path[-1] == "/":
+            path += "/"
+        chapters = self.get_chapters(series_url)
+        count_chapters = len(chapters)
+        if count_chapters < 1:
+            return
+        length_count = len(str(count_chapters))
+        updates = []
+        pages_count = 0
+        for i in range(count_chapters):
+            length = len(str(i+1))
+            istr = '0' * (length_count - length) + str(i+1)
+            print("Checking " + series_url + " for updates (" + istr + "/" + str(count_chapters) + ")", end="\r")
+            chapter = chapters[i]
+            name = self.get_name_for_file_system(chapter['name'])
+            cpath = path + name
+            if glob.glob(cpath):
+                continue
+            pages = self.get_pages(chapter['url'])
+            update = dict(
+                path=cpath,
+                pages=[]
+            )
+            for page in pages:
+                update['pages'].append((page['url'], cpath + "/" + page['name']))
+            updates.append(update)
+            pages_count += len(update['pages'])
+        print()
+        if updates:
+            print("Found " + str(len(updates)) + " updates, " + str(pages_count) + " images in total.")
+        else:
+            print("Found no updates.")
+        return updates
+
+
     def download_chapter(self, chapter_url, path="", force=False):
         """Download a single chapter of a series
 
