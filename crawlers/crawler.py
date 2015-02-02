@@ -9,7 +9,7 @@ class Crawler:
     site = ""
     url = ""
     search = ""
-    illegal_characters = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    illegal_characters = ['<', '>', ':', '"', '/', '\\', '|', '?', '*', '\t']
     verbose = False
 
     def search_series(self, title):
