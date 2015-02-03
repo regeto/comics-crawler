@@ -70,13 +70,20 @@ class Crawler:
             length = len(str(i+1))
             istr = '0' * (length_c - length) + str(i+1)
             print("Loading: " + " [", end="")
-            arrow = int((pages / total) * 19)
-            print(('=' * arrow) + '>' + (' ' * (18-arrow)), end="")
+            arrow = int((pages / total) * 20)
+            print(('=' * arrow) + '>' + (' ' * (19-arrow)), end="")
             print("] (" + istr + "/" + str(chapters) + ")", end="\r")
             self.download_update(updates[i])
             pages += len((original_updates.pop(0))['pages'])
-        print("Finished  [" + ('=' * 19) + "] (" + str(chapters) + "/" + str(chapters) + ")")
-        print("Downloaded " + str(chapters) + " updates for a total of " + str(pages) + " images.")
+        print("Finished  [" + ('=' * 20) + "] (" + str(chapters) + "/" + str(chapters) + ")")
+        string = "Downloaded " + str(chapters) + " update"
+        if chapters > 1:
+            string += "s"
+        string += " for a total of " + str(pages) + " image"
+        if pages > 1:
+            string += "s"
+        string += "."
+        print(string)
 
     def download_update(self, update):
         if not update['path'] == "" and not update['path'][-1] == "/":
@@ -116,7 +123,14 @@ class Crawler:
             pages_count += len(update['pages'])
         print()
         if updates:
-            print("Found " + str(len(updates)) + " updates, " + str(pages_count) + " images in total.")
+            string = "Found " + str(len(updates)) + " update"
+            if len(updates) > 1:
+                string += "s"
+            string += ", " + str(pages_count) + " image"
+            if pages_count > 1:
+                string += "s"
+            string += " in total."
+            print(string)
         else:
             print("Found no updates.")
         return updates
