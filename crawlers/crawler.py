@@ -9,7 +9,8 @@ class Crawler:
     site = ""
     url = ""
     search = ""
-    illegal_characters = ['<', '>', ':', '"', '/', '\\', '|', '?', '*', '\t']
+    illegal_characters = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    replacesd_characters = [('\t', ' ')]
     verbose = False
 
     def search_series(self, title):
@@ -42,6 +43,8 @@ class Crawler:
         return gf.read().decode("utf-8", 'ignore')
 
     def get_name_for_file_system(self, name):
+        for x, y in self.replacesd_characters:
+            name = name.replace(x, y)
         return (''.join([char for char in name if char not in self.illegal_characters])).strip()
 
     def get_file_extension(self, file_url):
