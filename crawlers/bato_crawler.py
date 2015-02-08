@@ -45,7 +45,8 @@ class BatoCrawler(Crawler):
                 url = reg_url.findall(x)[0]
                 html_image = self.get_html_gzip(url)
                 actual_url = reg_image.findall(html_image)[0]
-                name = url.split("/")[-1] + "." + self.get_file_extension(actual_url)
+                nr = '0' * (len(str(len(ret))) - len(str(pos))) + str(pos)
+                name = nr + "." + self.get_file_extension(actual_url)
                 ret[pos] = dict(url=actual_url, name=name)
                 pos += 1
         else:
