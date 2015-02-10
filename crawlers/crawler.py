@@ -45,13 +45,16 @@ class Crawler:
     def get_name_for_file_system(self, name):
         for x, y in self.replacesd_characters:
             name = name.replace(x, y)
-        return (''.join([char for char in name if char not in self.illegal_characters])).strip()
+        name = (''.join([char for char in name if char not in self.illegal_characters])).strip()
+        while (name[-1] == '.') or (name[-1] == ' '):
+            name = name[:-1]
+        return name
 
     def get_file_extension(self, file_url):
-        return self.get_complete_file_name(file_url).split(".")[-1]
+        return (self.get_complete_file_name(file_url).split(".")[-1]).strip()
 
     def get_file_name(self, file_url):
-        return '.'.join(self.get_complete_file_name(file_url).split(".")[:-1])
+        return ('.'.join(self.get_complete_file_name(file_url).split(".")[:-1])).strip()
 
     def get_complete_file_name(self, file_url):
         return file_url.split("/")[-1].split("?")[0]
@@ -137,7 +140,6 @@ class Crawler:
         else:
             print("Found no updates.")
         return updates
-
 
     def download_chapter(self, chapter_url, path="", force=False):
         """Download a single chapter of a series
