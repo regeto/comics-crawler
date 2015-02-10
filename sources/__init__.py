@@ -10,6 +10,7 @@ __all__ = [
     'dynasty',
     'eden',
     'kawaii',
+    'kiss',
     'oots',
     'smackjeeves',
 ]
