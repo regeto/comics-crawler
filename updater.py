@@ -20,7 +20,7 @@ def update_kawaii():
 
 
 def update_kiss():
-    do_update(KissCrawler(), kawaii.sources)
+    do_update(KissCrawler(), kiss.sources)
 
 
 def update_oots():
