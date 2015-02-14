@@ -19,6 +19,10 @@ def update_kawaii():
     do_update(KawaiiCrawler(), kawaii.sources)
 
 
+def update_kiss():
+    do_update(KissCrawler(), kawaii.sources)
+
+
 def update_oots():
     do_update(OotsCrawler(), oots.sources)
 
@@ -32,6 +36,7 @@ def update_all():
     update_dynasty()
     update_eden()
     update_kawaii()
+    update_kiss()
     update_oots()
     update_smackjeeves()
 

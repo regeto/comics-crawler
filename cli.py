@@ -87,6 +87,8 @@ for x in ["eden", "mangaeden", "mangaeden.com"]:
     switch_update[x] = updater.update_eden
 for x in ["kawai", "kawaii", "kawaii-scans", "kawaii-reader", "kawaii.ca"]:
     switch_update[x] = updater.update_kawaii
+for x in ["kiss", "kissmanga", "kissmanga.com"]:
+    switch_update[x] = updater.update_kiss
 for x in ["oots", "giantitp", "giantitp.com"]:
     switch_update[x] = updater.update_oots
 for x in ["smack", "smackjeeves", "smackjeeves.com"]:
