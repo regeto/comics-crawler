@@ -9,8 +9,20 @@ class Crawler:
     site = ""
     url = ""
     search = ""
-    illegal_characters = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
-    replacesd_characters = [('\t', ' ')]
+    replaced_characters = {
+                        '<': '',
+                        '>': '',
+                        ':': '',
+                        '"': '',
+                        '/': '',
+                        '\\': '',
+                        '|': '',
+                        '?': '',
+                        '*': '',
+                        '\t': ' ',
+                        '[': '[[]',
+                        ']': '[]]'
+    }
     verbose = False
 
     def search_series(self, title):
@@ -43,9 +55,10 @@ class Crawler:
         return gf.read().decode("utf-8", 'ignore')
 
     def get_name_for_file_system(self, name):
-        for x, y in self.replacesd_characters:
-            name = name.replace(x, y)
-        name = (''.join([char for char in name if char not in self.illegal_characters])).strip()
+        name = (''.join([char if char not in self.replaced_characters
+                         else self.replaced_characters[char]
+                         for char in name])
+                ).strip()
         while (name[-1] == '.') or (name[-1] == ' '):
             name = name[:-1]
         return name
