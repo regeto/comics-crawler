@@ -20,8 +20,6 @@ class Crawler:
                         '?': '',
                         '*': '',
                         '\t': ' ',
-                        '[': '[[]',
-                        ']': '[]]'
     }
     verbose = False
 
@@ -129,7 +127,7 @@ class Crawler:
             chapter = chapters[i]
             name = self.get_name_for_file_system(chapter['name'])
             cpath = path + name
-            if glob.glob(cpath):
+            if os.path.exists(cpath):
                 continue
             pages = self.get_pages(chapter['url'])
             update = dict(
