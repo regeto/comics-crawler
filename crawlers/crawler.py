@@ -71,6 +71,8 @@ class Crawler:
         return file_url.split("/")[-1].split("?")[0]
 
     def do_download_file(self, url, path):
+        if (len(url) == 0) or (len(path) == 0):
+            return
         urllib.request.urlretrieve(url, path)
 
     def download_updates(self, original_updates):
