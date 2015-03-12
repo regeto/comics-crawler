@@ -57,7 +57,7 @@ class Crawler:
                          else self.replaced_characters[char]
                          for char in name])
                 ).strip()
-        while (name[-1] == '.') or (name[-1] == ' '):
+        while (len(name) > 0) and ((name[-1] == '.') or (name[-1] == ' ')):
             name = name[:-1]
         return name
 
