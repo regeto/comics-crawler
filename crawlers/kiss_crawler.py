@@ -15,7 +15,7 @@ class KissCrawler(Crawler):
         ret = [None] * len(r)
         pos = 0
         for x in r:
-            ret[pos] = dict(url=self.url + x[0], name=self.get_complete_file_name(x[0]))
+            ret[pos] = dict(url=self.url + x[0], name=self.get_complete_file_name(x[1]))
             pos += 1
         return ret
 
