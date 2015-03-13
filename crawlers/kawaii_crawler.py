@@ -32,7 +32,10 @@ class KawaiiCrawler(Crawler):
         html = self.get_html(chapter_url)
         regex = "<select name=\"page\".*?>(.*?)<\/select>"
         reg = re.compile(regex)
-        r = reg.findall(html)[0]
+        r_tmp = reg.findall(html)
+        if not r_tmp:
+            return False
+        r = r_tmp[0]
         regex_page = "value=\"(.*?)\".*?>(.*?)<"
         reg_page = re.compile(regex_page)
         r_page = reg_page.findall(r)

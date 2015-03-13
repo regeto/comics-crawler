@@ -169,6 +169,8 @@ class Crawler:
                 print("The folder at \"" + path + "\" already exists. This chapter has been skipped.")
             return False
         pages = self.get_pages(chapter_url)
+        if not pages:
+            return False
         if not os.path.exists(path):
             if self.verbose:
                 print("Creating folder at \"" + path + "\".")
